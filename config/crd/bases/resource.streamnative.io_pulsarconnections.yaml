@@ -112,6 +112,11 @@ spec:
                   This URL is used for administrative operations.
                 pattern: ^https?://.+$
                 type: string
+              allowInsecureConnection:
+                default: true
+                description: Allow insecure connection allows the Pulsar client to
+                  connect to the Pulsar cluster without TLS verification.
+                type: boolean
               authentication:
                 description: |-
                   Authentication defines the authentication configuration for connecting to the Pulsar cluster.
@@ -211,6 +216,23 @@ spec:
                 description: |-
                   ClusterName specifies the name of the local Pulsar cluster.
                   When setting up Geo-Replication between Pulsar instances, this should be enabled to identify the cluster.
+                type: string
+              hostnameVerificationEnable:
+                default: false
+                description: HostnameVerificationEnable enables hostname verification
+                  for the Pulsar client.
+                type: boolean
+              tlsCertFilePath:
+                description: TLSCertFilePath is the file path to the TLS certificate
+                  for Pulsar client authentication.
+                type: string
+              tlsKeyFilePath:
+                description: TLSKeyFilePath is the file path to the TLS private key
+                  for Pulsar client authentication.
+                type: string
+              tlsTrustCertsFilePath:
+                description: TLSTrustCertsFilePath is the file path to the trusted
+                  TLS certificate
                 type: string
             type: object
           status:

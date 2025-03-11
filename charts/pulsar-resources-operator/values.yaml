@@ -170,3 +170,28 @@ cloudStorage:
       sasToken: ""
       # -- Use account key for authentication (if false, will use SAS token)
       useAccountKey: true
+
+tls:
+  # -- Enable TLS for the operator to use with Pulsar Admin
+  enabled: true 
+  # -- CA certificate options
+  ca:
+    secret:
+      # -- Secret name for the CA certificate
+      name: "pulsar-ca-tls"
+      # -- Secret key for the CA certificate
+      key:
+      - "ca.crt" 
+    ## -- Mount path for the certificate
+    mountPath: "/etc/pulsar-admin/certs/ca"
+  # -- Admin certificate options
+  admin: 
+    secret: 
+      # -- Secret name for the TLS certificate
+      name: "pulsar-client-admin"
+      # -- Secret key for the TLS certificate
+      key: 
+        - "tls.crt"
+        - "tls.key"
+    ## -- Mount path for the certificate
+    mountPath: "/etc/pulsar-admin/certs/admin"

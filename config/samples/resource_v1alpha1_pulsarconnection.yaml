@@ -19,6 +19,9 @@ metadata:
   namespace: pulsar
 spec:
   adminServiceURL: http://c-sn-platform-broker.pulsar.svc.cluster.local:8080
+  tlsTrustCertsFilePath: /etc/pulsar-admin/certs/ca.crt 
+  tlsCertFilePath: /etc/pulsar-admin/certs/admin/tls.crt 
+  tlsKeyFilePath: /etc/pulsar-admin/certs/admin/tls.key
   authentication:
     token:
       secretRef:

@@ -38,12 +38,30 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- if or .Values.cloudStorage.gcs.enabled .Values.cloudStorage.s3.enabled .Values.cloudStorage.azure.enabled }}
+      {{- if or .Values.cloudStorage.gcs.enabled .Values.cloudStorage.s3.enabled .Values.cloudStorage.azure.enabled .Values.tls.enabled }}
       volumes:
         {{- if and .Values.cloudStorage.gcs.enabled (not .Values.cloudStorage.gcs.serviceAccount.useWorkloadIdentity) }}
         - name: gcs-credentials
           secret:
             secretName: {{ .Values.cloudStorage.gcs.serviceAccount.key.secretName }}
+        {{- end }}
+        {{- if .Values.tls.enabled }}
+        - name: admin-cert
+          secret:
+            items: 
+            {{- range $_, $value := .Values.tls.admin.secret.key }}
+            - key: {{ $value }}
+              path: {{ $value }}
+            {{- end }}
+            secretName: {{ .Values.tls.admin.secret.name }}
+        - name: ca-cert
+          secret:
+            items: 
+            {{- range $_, $value := .Values.tls.ca.secret.key }}
+            - key: {{ $value }}
+              path: {{ $value }}
+            {{- end }}
+            secretName: {{ .Values.tls.ca.secret.name }}
         {{- end }}
       {{- end }}
       imagePullSecrets:
@@ -105,11 +123,19 @@ spec:
           {{- toYaml .Values.securityContext | nindent 10 }}
         image: "{{ .Values.image.manager.registry }}/{{ .Values.image.manager.repository }}:{{ .Values.image.manager.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        {{- if and .Values.cloudStorage.gcs.enabled (not .Values.cloudStorage.gcs.serviceAccount.useWorkloadIdentity) }}
+        {{- if or (and .Values.cloudStorage.gcs.enabled (not .Values.cloudStorage.gcs.serviceAccount.useWorkloadIdentity)) .Values.tls.enabled }}
         volumeMounts:
         - name: gcs-credentials
           mountPath: {{ .Values.cloudStorage.gcs.serviceAccount.key.mountPath }}
           readOnly: true
+        {{- if .Values.tls.enabled }}
+        - name: admin-cert
+          mountPath: {{ .Values.tls.admin.mountPath }}
+          readOnly: true
+        - name: ca-cert
+          mountPath: {{ .Values.tls.ca.mountPath }}
+          readOnly: true
+        {{- end }}
         {{- end }}
         livenessProbe:
           httpGet:

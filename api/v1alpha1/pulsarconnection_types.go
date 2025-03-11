@@ -42,6 +42,23 @@ type PulsarConnectionSpec struct {
 	// +kubebuilder:validation:Pattern="^https?://.+$"
 	AdminServiceURL string `json:"adminServiceURL"`
 
+	// TLSTrustCertsFilePath is the file path to the trusted TLS certificate
+	TLSTrustCertsFilePath string `json:"tlsTrustCertsFilePath,omitempty"`
+
+	// TLSCertFilePath is the file path to the TLS certificate for Pulsar client authentication.
+	TLSCertFilePath string `json:"tlsCertFilePath,omitempty"`
+
+	// TLSKeyFilePath is the file path to the TLS private key for Pulsar client authentication.
+	TLSKeyFilePath string `json:"tlsKeyFilePath,omitempty"`
+
+	// Allow insecure connection allows the Pulsar client to connect to the Pulsar cluster without TLS verification.
+	// +kubebuilder:default=true
+	AllowInsecureConnection bool `json:"allowInsecureConnection,omitempty"`
+
+	// HostnameVerificationEnable enables hostname verification for the Pulsar client.
+	// +kubebuilder:default=false
+	HostnameVerificationEnable bool `json:"hostnameVerificationEnable,omitempty"`
+
 	// Authentication defines the authentication configuration for connecting to the Pulsar cluster.
 	// It supports both token-based and OAuth2-based authentication methods.
 	// +optional

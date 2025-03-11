@@ -309,7 +309,12 @@ func MakePulsarAdminConfig(ctx context.Context, connection *resourcev1alpha1.Pul
 		return nil, fmt.Errorf("adminServiceURL or adminServiceSecureURL must not be empty")
 	}
 	cfg := admin.PulsarAdminConfig{
-		WebServiceURL: connection.Spec.AdminServiceURL,
+		WebServiceURL:                 connection.Spec.AdminServiceURL,
+		TLSTrustCertsFilePath:         connection.Spec.TLSTrustCertsFilePath,
+		TLSCertFilePath:               connection.Spec.TLSCertFilePath,
+		TLSKeyFilePath:                connection.Spec.TLSKeyFilePath,
+		TLSAllowInsecureConnection:    connection.Spec.AllowInsecureConnection,
+		TLSEnableHostnameVerification: connection.Spec.HostnameVerificationEnable,
 	}
 	hasAuth := false
 	if authn := connection.Spec.Authentication; authn != nil {
