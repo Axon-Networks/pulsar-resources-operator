@@ -33,7 +33,7 @@ jobs:
       - name: Set environment variables
         run: |
           echo "BUILD_IMAGE=golang:1.21" >> $GITHUB_ENV
-          echo "KO_DOCKER_REPO=axon-networks/pulsar-resources-operator" >> $GITHUB_ENV
+          echo "KO_DOCKER_REPO=ghcr.io/axon-networks/pulsar-resources-operator" >> $GITHUB_ENV
         
       - name: Run mage.go Release
         run: go run mage.go Release
